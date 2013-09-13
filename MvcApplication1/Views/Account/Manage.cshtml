@@ -1,0 +1,29 @@
+﻿@model MvcApplication1.Models.LocalPasswordModel
+@{
+    ViewBag.Title = "Manage Account";
+}
+<div class="row">
+    <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3">
+        <p class="message-success">@ViewBag.StatusMessage</p>
+        <p>You're logged in as <strong>@User.Identity.Name</strong>.</p>
+        @if (ViewBag.HasLocalPassword)
+        {
+            @Html.Partial("_ChangePasswordPartial")
+        }
+        else
+        { 
+            @Html.Partial("_SetPasswordPartial")
+        }
+
+        @*<section id="externalLogins">
+            @Html.Action("RemoveExternalLogins")
+            <h3>Add an external login</h3>
+            @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
+        </section>*@ 
+        <!-- login with facebook? -->
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

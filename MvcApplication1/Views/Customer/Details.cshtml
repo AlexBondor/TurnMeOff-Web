@@ -1,0 +1,72 @@
+﻿@using MvcApplication1.Models.UserModel
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+
+    <div class="col-lg-3 col-sm-3">
+        <ul class="nav" style="background: #efefef; padding: 40px 20px; text-align: center">
+            <li><a href="#">Item stufsd</a></li>
+            <li><a href="#">Item stufsd</a></li>
+            <li><a href="#">Item stufsd</a></li>
+            <li><a href="#">Item stufsd</a></li>
+            <li><a href="#">Item stufsd</a></li>
+            <li><a href="#">Item stufsd</a></li>
+            <li><a href="#">Item stufsd</a></li>
+
+
+        </ul>
+    </div>
+    <div class="col-lg-9 col-sm-9">
+        <h2>Details about the user:</h2>
+
+        <h3>Email: @Model.Email</h3>
+        <h3>Name: @Model.Name</h3>
+        <h3>Age: @Model.Age</h3>
+
+        <ul>
+            @foreach (var interes in @Model.Interests)
+            { 
+                <li id="element-lista" class="btn btn-default">@interes</li>
+            }
+        </ul>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Interes1</th>
+                    <th>Interes 2</th>
+                    <th>Interes 3</th>
+                    <th>Interes1</th>
+                    <th>Interes5</th>
+                    <th>Interes6</th>
+                    <th>Interes7</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                    <tr>
+                        @foreach (var interes in @Model.Interests)
+                        { 
+                            <td>@interes</td>
+                        }
+                    </tr>
+            </tbody>
+        </table>
+        <a href="~/Customer/Index" class="btn">Index</a>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        //ce e scris in document.ready se executa dupa ce s o terminat pagina de incarcat in browser..
+
+        // $('#element-lista').css("color", "#ccc");//da culoare gri la elementul cu id ul respectiv
+
+        //  $('#element-lista').addClass("btn btn-primary");
+
+
+    </script>
+
+}
