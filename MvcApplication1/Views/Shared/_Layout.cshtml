@@ -1,5 +1,21 @@
 ﻿@{
     var ControllerName = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString().ToLower();
+    var ActionName = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString().ToLower();
+    if (ActionName.ToString() == "adddevice")
+    {
+        ActionName = "Add Device";
+    }
+    else
+    {
+        if (ActionName.ToString() == "accountsettings")
+        {
+            ActionName = "Account Settings";
+        }
+        else
+        {
+            ActionName = ActionName[0].ToString().ToUpper() + ActionName.Substring(1, ActionName.Length - 1);
+        }
+    }
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -24,25 +40,26 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="~/Customer">TurnMeOff</a>
+                <a class="navbar-brand" style="color: black"><b>@ActionName</b></a>
                 @*<span class="glyphicon glyphicon-search"></span>*@
             </div>
-
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav">
+                @*<ul class="nav navbar-nav">
                     <li><a href="/customer/details">Details</a></li>
-
-                </ul>
+                </ul>*@
 
                 <ul class="nav navbar-nav navbar-right">
+
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">@User.Identity.Name<b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>@User.Identity.Name</b><b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Dashboard</a></li>
-                            <li><a href="#">Add device</a></li>
+                            <li><a href="~/Customer/Dashboard">Dashboard</a></li>
+                            <li><a href="~/Customer/AccountSettings">Account Settings</a></li>
                             <li class="divider"></li>
-                            <li><a href="~/Account/Login">Logout</a></li>
+                            <li><a href="~/Account/Login">Log Out</a></li>
                         </ul>
+
                     </li>
                 </ul>
             </div>
@@ -64,5 +81,10 @@
     @section scripts {
 
     }
+    <footer>
+        <br>
+        <br>
+        <br>
+    </footer>
 </body>
 </html>

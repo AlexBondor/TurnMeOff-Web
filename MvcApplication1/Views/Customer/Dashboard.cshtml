@@ -1,0 +1,52 @@
+﻿@using MvcApplication1.Models.UserModel
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2">
+        @*<!-- page header BEGINS here -->
+        <div class="page-header">
+            <h1>Your devices!</h1>
+        </div>
+        <!-- END page header -->*@
+
+        <!-- table BEGINS here -->
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th style="font-size: large">Device name</th>
+                    <th class="pull-right" style="font-size: large; padding-left: initial;">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var device in @Model.Devices)
+                {
+                    <tr style="cursor: pointer">
+                        <td>@device</td>
+                        <td>
+                            <div class="toggle">
+                                <input type="checkbox" class="check">
+                                <b class="b switch"></b>
+                                <b class="b track"></b>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="divider"></tr>
+                }
+
+            </tbody>
+        </table>
+        @*<a id="" href="~/Customer/AddDevice">*@
+        <button type="button" class="btn btn-success btn-block" style="font-size: large">Add device</button>
+        @*</a>*@
+        @*<p class="pull-left">Device name</p>*@
+        @*<p class="pull-right">Status</p>*@
+
+
+
+        <!-- for each device show it in table -->
+
+        <!-- END table -->
+    </div>
+</div>
