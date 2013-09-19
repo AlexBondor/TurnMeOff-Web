@@ -5,13 +5,6 @@
 }
 <div class="row">
     <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2">
-        @*<!-- page header BEGINS here -->
-        <div class="page-header">
-            <h1>Your devices!</h1>
-        </div>
-        <!-- END page header -->*@
-
-        <!-- table BEGINS here -->
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -27,6 +20,7 @@
                         <td>
                             <div class="toggle">
                                 <input type="checkbox" class="check">
+                                <!-- unchecked as it is:) or <input type="checkbox" checked class="check"> to be checked -->
                                 <b class="b switch"></b>
                                 <b class="b track"></b>
                             </div>
@@ -37,16 +31,7 @@
 
             </tbody>
         </table>
-        @*<a id="" href="~/Customer/AddDevice">*@
-        <button type="button" class="btn btn-success btn-block" style="font-size: large">Add device</button>
-        @*</a>*@
-        @*<p class="pull-left">Device name</p>*@
-        @*<p class="pull-right">Status</p>*@
-
-
-
-        <!-- for each device show it in table -->
-
+        <a class="btn btn-success btn-block" style="font-size: large" href="~/Devices/Add">Add device</a>
         <!-- END table -->
     </div>
 </div>

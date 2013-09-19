@@ -1,20 +1,14 @@
 ﻿@{
     var ControllerName = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString().ToLower();
     var ActionName = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString().ToLower();
-    if (ActionName.ToString() == "adddevice")
+    <!-- Page name shown in header. Restriction for 2 words -->
+    if (ActionName.ToString() == "oneexample")
     {
-        ActionName = "Add Device";
+        ActionName = "One Example";
     }
     else
     {
-        if (ActionName.ToString() == "accountsettings")
-        {
-            ActionName = "Account Settings";
-        }
-        else
-        {
-            ActionName = ActionName[0].ToString().ToUpper() + ActionName.Substring(1, ActionName.Length - 1);
-        }
+        ActionName = ActionName[0].ToString().ToUpper() + ActionName.Substring(1, ActionName.Length - 1);
     }
 }
 <!DOCTYPE html>
@@ -28,12 +22,12 @@
     @Styles.Render("~/content/css")
 </head>
 <body>
-    @if (ControllerName != "account") //TODO to upper!..check if current controller = Account
+    @if ((ControllerName != "account") || (ControllerName == "account" && ActionName == "Settings")) //put layout on all but Account controller(but Settings action)
     {
-        <nav class="navbar navbar-default" role="navigation">
+        <nav class="navbar navbar-default" role="banner">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-ex1-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -41,28 +35,23 @@
                 </button>
                 <a class="navbar-brand" href="~/Customer">TurnMeOff</a>
                 <a class="navbar-brand" style="color: black"><b>@ActionName</b></a>
-                @*<span class="glyphicon glyphicon-search"></span>*@
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                @*<ul class="nav navbar-nav">
-                    <li><a href="/customer/details">Details</a></li>
-                </ul>*@
+            <nav class="navbar-collapse navbar-ex1-collapse collapse" role="navigation" style="height: 1px;">
 
                 <ul class="nav navbar-nav navbar-right">
-
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>@User.Identity.Name</b><b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="~/Customer/Dashboard">Dashboard</a></li>
-                            <li><a href="~/Customer/AccountSettings">Account Settings</a></li>
+                            <li><a href="~/Devices/List">List</a></li>
+                            <li><a href="~/Account/Settings">Account Settings</a></li>
+                            <li><a href="~/Devices/Settings">Devices Settings</a></li>
                             <li class="divider"></li>
                             <li><a href="~/Account/Login">Log Out</a></li>
                         </ul>
-
                     </li>
                 </ul>
-            </div>
+            </nav>
             <!-- /.navbar-collapse -->
         </nav>
         <!-- end navbar -->

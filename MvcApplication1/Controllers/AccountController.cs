@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MvcApplication1.Models.UserModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
@@ -17,6 +18,19 @@ namespace MvcApplication1.Controllers
     [InitializeSimpleMembership]
     public class AccountController : Controller
     {
+
+        //GET: /Account/Settings
+        [AllowAnonymous]
+        public ActionResult Settings()
+        {
+            var customer = new UserModel();
+            customer.Name = "Alex Bondor";
+            customer.Username = "alex";
+            customer.Email = "xxx@gmail.com";
+            return View(customer);
+        }
+
+
         //
         // GET: /Account/Login
 
@@ -327,6 +341,8 @@ namespace MvcApplication1.Controllers
             ViewBag.ShowRemoveButton = externalLogins.Count > 1 || OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             return PartialView("_RemoveExternalLoginsPartial", externalLogins);
         }
+
+        
 
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)
