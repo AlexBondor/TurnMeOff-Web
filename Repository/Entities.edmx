@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="turnoffdbModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="turnoffdbModelStoreContainer">
+          <EntitySet Name="Devices" EntityType="turnoffdbModel.Store.Devices" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="MasterDevices" EntityType="turnoffdbModel.Store.MasterDevices" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PendingDevice" EntityType="turnoffdbModel.Store.PendingDevice" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Users" EntityType="turnoffdbModel.Store.Users" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Devices_Users" Association="turnoffdbModel.Store.FK_Devices_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Devices" EntitySet="Devices" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Devices">
+          <Key>
+            <PropertyRef Name="deviceID" />
+          </Key>
+          <Property Name="deviceID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+          <Property Name="isSensor" Type="bit" Nullable="false" />
+          <Property Name="userID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="isOn" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MasterDevices">
+          <Key>
+            <PropertyRef Name="masterDeviceID" />
+          </Key>
+          <Property Name="masterDeviceID" Type="nchar" Nullable="false" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="PendingDevice">
+          <Key>
+            <PropertyRef Name="deviceID" />
+          </Key>
+          <Property Name="deviceID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="userID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Firstname" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Lastname" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="masterDeviceID" Type="nchar" Nullable="false" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK_Devices_Users">
+          <End Role="Users" Type="turnoffdbModel.Store.Users" Multiplicity="1" />
+          <End Role="Devices" Type="turnoffdbModel.Store.Devices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="Devices">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="turnoffdbModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="turnoffdbEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Devices" EntityType="turnoffdbModel.Device" />
+          <EntitySet Name="Users" EntityType="turnoffdbModel.User" />
+          <AssociationSet Name="FK_Devices_Users" Association="turnoffdbModel.FK_Devices_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Devices" EntitySet="Devices" />
+          </AssociationSet>
+          <EntitySet Name="PendingDevices" EntityType="turnoffdbModel.PendingDevice" />
+          <EntitySet Name="MasterDevices" EntityType="turnoffdbModel.MasterDevice" />
+        </EntityContainer>
+        <EntityType Name="Device">
+          <Key>
+            <PropertyRef Name="deviceID" />
+          </Key>
+          <Property Name="deviceID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="isSensor" Type="Boolean" Nullable="false" />
+          <Property Name="userID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="turnoffdbModel.FK_Devices_Users" FromRole="Devices" ToRole="Users" />
+          <Property Type="Boolean" Name="isOn" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="Guid" Nullable="false" />
+          <Property Name="Firstname" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Lastname" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Devices" Relationship="turnoffdbModel.FK_Devices_Users" FromRole="Users" ToRole="Devices" />
+          <Property Type="String" Name="masterDeviceID" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Devices_Users">
+          <End Role="Users" Type="turnoffdbModel.User" Multiplicity="1" />
+          <End Role="Devices" Type="turnoffdbModel.Device" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="Devices">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="PendingDevice">
+          <Key>
+            <PropertyRef Name="deviceID" />
+          </Key>
+          <Property Type="Guid" Name="deviceID" Nullable="false" />
+          <Property Type="Guid" Name="userID" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MasterDevice">
+          <Key>
+            <PropertyRef Name="masterDeviceID" />
+          </Key>
+          <Property Type="String" Name="masterDeviceID" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="turnoffdbModelStoreContainer" CdmEntityContainer="turnoffdbEntities">
+          <EntitySetMapping Name="Devices">
+            <EntityTypeMapping TypeName="turnoffdbModel.Device">
+              <MappingFragment StoreEntitySet="Devices">
+                <ScalarProperty Name="isOn" ColumnName="isOn" />
+                <ScalarProperty Name="deviceID" ColumnName="deviceID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="isSensor" ColumnName="isSensor" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="turnoffdbModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="masterDeviceID" ColumnName="masterDeviceID" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PendingDevices">
+            <EntityTypeMapping TypeName="turnoffdbModel.PendingDevice">
+              <MappingFragment StoreEntitySet="PendingDevice">
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="deviceID" ColumnName="deviceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MasterDevices">
+            <EntityTypeMapping TypeName="turnoffdbModel.MasterDevice">
+              <MappingFragment StoreEntitySet="MasterDevices">
+                <ScalarProperty Name="masterDeviceID" ColumnName="masterDeviceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

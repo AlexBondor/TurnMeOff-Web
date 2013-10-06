@@ -2,14 +2,8 @@
     var ControllerName = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString().ToLower();
     var ActionName = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString().ToLower();
     <!-- Page name shown in header. Restriction for 2 words -->
-    if (ActionName.ToString() == "oneexample")
-    {
-        ActionName = "One Example";
-    }
-    else
-    {
-        ActionName = ActionName[0].ToString().ToUpper() + ActionName.Substring(1, ActionName.Length - 1);
-    }
+    ActionName = ActionName[0].ToString().ToUpper() + ActionName.Substring(1, ActionName.Length - 1);
+    ControllerName = ControllerName[0].ToString().ToUpper() + ControllerName.Substring(1, ControllerName.Length - 1);
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -19,61 +13,70 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
 
-    @Styles.Render("~/content/css")
+    @Styles.Render("~/Content/css", "~/Content/bootstrap")
 </head>
-<body>
-    @if ((ControllerName != "account") || (ControllerName == "account" && ActionName == "Settings")) //put layout on all but Account controller(but Settings action)
+<body class="background-img">
+    @if ((ControllerName != "Account") || (ControllerName == "Account" && ActionName == "Edit")) //put layout on all but Account controller(but Edit action)
     {
-        <nav class="navbar navbar-default" role="banner">
+        <!-- TOP NAVBAR -->
+        <nav class="navbar-fixed-top navbar navbar-default" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="~/Customer">TurnMeOff</a>
-                <a class="navbar-brand" style="color: black"><b>@ActionName</b></a>
+                <a class="navbar-brand" href="~/Devices/List">TurnMeOff</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <nav class="navbar-collapse navbar-ex1-collapse collapse" role="navigation" style="height: 1px;">
+            <div class="collapse navbar-collapse navbar-ex1-collapse" role="navigation" style="height: 10px;">
+                <ul class="hidden-lg hidden-md hidden-sm nav navbar-nav navbar-right">
+                    <li><a href="~/Devices/List">My Devices</a></li>
+                    <li><a href="~/Account/Edit">Edit Account</a></li>
+                    <li><a href="~/Devices/Settings">Devices Settings</a></li>
+                    <li><a href="~/Account/Logout"><strong>Log Out</strong></a></li>
+                </ul>
 
-                <ul class="nav navbar-nav navbar-right">
+                <ul class="visible-lg visible-md visible-sm nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>@User.Identity.Name</b><b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="~/Devices/List">List</a></li>
-                            <li><a href="~/Account/Settings">Account Settings</a></li>
+                            <li><a href="~/Devices/List">My Devices</a></li>
+                            <li><a href="~/Account/Edit">Edit Account</a></li>
                             <li><a href="~/Devices/Settings">Devices Settings</a></li>
                             <li class="divider"></li>
-                            <li><a href="~/Account/Login">Log Out</a></li>
+                            <li><a href="~/Account/Logout">Log Out</a></li>
                         </ul>
                     </li>
                 </ul>
-            </nav>
+            </div>
             <!-- /.navbar-collapse -->
         </nav>
-        <!-- end navbar -->
+        <!-- end TOP navbar -->
     }
-    <div class="container">
 
+
+    @if ((ControllerName != "Account") || (ControllerName == "Account" && ActionName == "Edit"))
+    {
         @RenderBody()
-    </div>
+    }
+    else
+    {
+        <div class="container">
+            @RenderBody()
+        </div>
+    }
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryval")
-
-
+    @Scripts.Render("~/bundles/jquery", "~/bundles/jqueryval", "~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 
     @section scripts {
-
+        <script type="text/javascript">
+        </script>
     }
     <footer>
-        <br>
-        <br>
-        <br>
     </footer>
 </body>
 </html>

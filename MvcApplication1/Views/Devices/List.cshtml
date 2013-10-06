@@ -1,37 +1,77 @@
-﻿@using MvcApplication1.Models.UserModel
-@{
-    ViewBag.Title = "Dashboard";
+﻿@{
+    ViewBag.Title = "List";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
-<div class="row">
-    <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th style="font-size: large">Device name</th>
-                    <th class="pull-right" style="font-size: large; padding-left: initial;">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var device in @Model.Devices)
-                {
-                    <tr style="cursor: pointer">
-                        <td>@device</td>
-                        <td>
-                            <div class="toggle">
-                                <input type="checkbox" class="check">
-                                <!-- unchecked as it is:) or <input type="checkbox" checked class="check"> to be checked -->
-                                <b class="b switch"></b>
-                                <b class="b track"></b>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="divider"></tr>
-                }
 
-            </tbody>
-        </table>
-        <a class="btn btn-success btn-block" style="font-size: large" href="~/Devices/Add">Add device</a>
-        <!-- END table -->
+    var list = ViewBag.Lista;
+}
+
+<!-- BODY -->
+<div class="row">
+    <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+
+        <!-- LIST -->
+        <div class="list-group" style="padding-bottom: 50px">
+            @if (list.Count > 0)
+            {
+                foreach (var device in list)
+                {
+                <a id="test" href="/Devices/Edit/@device.deviceID" class="list-group-item">
+                    <h3 class="list-group-item-heading">@device.Name</h3>
+                    @if (device.Description == null)
+                    {
+                        <p class="list-group-item-text">
+                            No Description.
+                            <br>
+                            Status: Connected
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="list-group-item-text">
+                            Description: @device.Description
+                            <br>
+                            Status: Connected
+                        </p>
+                    }
+                    
+                    <div class="toggle">
+                        <input id="@device.isOn" name="isOn" type="checkbox" class="check" value="@device.isOn">
+                        <!-- unchecked as it is:) or <input type="checkbox" checked class="check"> to be checked -->
+                        <b class="b switch"></b>
+                        <b class="b track"></b>
+                    </div>
+                </a>
+                }
+            }
+            else
+            {
+                <a href="#" class="list-group-item">
+                    <h3 class="list-group-item-heading">No devices yet!</h3>
+                    <p class="list-group-item-text">
+                        Click Add device button and customize it!                       
+                    </p>
+                </a>
+            }
+        </div>
+
+
     </div>
 </div>
+<!-- BOTTOM NAVBAR -->
+<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation" style="background-color: transparent">
+    <div class="rowCustom">
+        <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+            <div class="btn-group btn-group-justified">
+                <a type="button" class="btn btn-success btn-block btn-lg" style="font-size: large" href="~/Devices/Add">Add device</a>
+                <a type="button" class="btn btn-danger btn-block btn-lg" style="font-size: large" href="#">Turn off all devices</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+@section scripts{
+    <script type="text/javascript">
+       
+    </script>
+}

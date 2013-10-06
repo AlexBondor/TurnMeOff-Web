@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace MvcApplication1
+namespace TurnMeOff
 {
     public class BundleConfig
     {
@@ -18,6 +18,12 @@ namespace MvcApplication1
 
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/bootstrap.css",
                              "~/Content/style.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include("~/Scripts/bootstrap.js"));
+
+            bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
+                    "~/Content/bootstrap.css",
+                    "~/Content/bootstrap-responsive.css"));
         }
     }
 }

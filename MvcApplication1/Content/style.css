@@ -1,80 +1,80 @@
 ﻿/* ios 7 toggle button din ~views/dashboard */
 * {
-  margin: 0;
-  padding: 0;
-  position: relative;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    box-sizing: border-box;
 }
 
 html, body {
-  height: 100%;
+    height: 100%;
 }
 
 .b {
-  display: block;
+    display: block;
 }
 
 .toggle {
-  position: absolute;
-  top: 80%;
-  left: 90%;
-  width: 40px;
-  height: 20px;
-  border-radius: 100px;
-  background-color: #ddd;
-  margin: -20px -40px;
-  overflow: hidden;
-  box-shadow: inset 0 0 2px 1px rgba(0,0,0,.05);
+    position: absolute;
+    top: 65%;
+    left: 95%;
+    width: 40px;
+    height: 20px;
+    border-radius: 100px;
+    background-color: #ddd;
+    margin: -20px -40px;
+    overflow: hidden;
+    box-shadow: inset 0 0 2px 1px rgba(0,0,0,.05);
 }
 
 .check {
-  position: absolute;
-  display: block;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  z-index: 6;
+    position: absolute;
+    display: block;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 6;
 }
 
-  .check:checked ~ .track {
-    box-shadow: inset 0 0 0 20px #5cb85c;
-  }
+    .check:checked ~ .track {
+        box-shadow: inset 0 0 0 20px #5cb85c;
+    }
 
-  .check:checked ~ .switch {
-    right: 2px;
-    left: 22px;
-    transition: .4s ease;
-    transition-property: left, right;
-    transition-delay: .05s, 0s;
-  }
+    .check:checked ~ .switch {
+        right: 2px;
+        left: 22px;
+        transition: .4s ease;
+        transition-property: left, right;
+        transition-delay: .05s, 0s;
+    }
 
 .switch {
-  position: absolute;
-  left: 2px;
-  top: 2px;
-  bottom: 2px;
-  right: 22px;
-  background-color: #fff;
-  border-radius: 36px;
-  z-index: 1;
-  transition: .4s ease;
-  transition-property: left, right;
-  transition-delay: 0s, .05s;
-  box-shadow: 0 1px 2px rgba(0,0,0,.5);
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    bottom: 2px;
+    right: 22px;
+    background-color: #fff;
+    border-radius: 36px;
+    z-index: 1;
+    transition: .4s ease;
+    transition-property: left, right;
+    transition-delay: 0s, .05s;
+    box-shadow: 0 1px 2px rgba(0,0,0,.5);
 }
 
 .track {
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  transition: .4s ease;
-  box-shadow: inset 0 0 0 2px rgba(0,0,0,.05);
-  border-radius: 40px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    transition: .4s ease;
+    box-shadow: inset 0 0 0 2px rgba(0,0,0,.05);
+    border-radius: 40px;
 }
 
 /* ******************************************************* */
@@ -83,3 +83,38 @@ html, body {
 
 /* ******************************************************* */
 
+.box-transparency {
+    border: 1px solid #ddd;
+    border-radius: 4px 4px;
+    background-color: rgb(255,255,255);
+}
+
+.background-img {
+    background-image: url(../images/background.png);
+}
+
+.field-validation-error {
+    color: red;
+}
+
+.input-validation-error {
+    border: 1px solid red;
+}
+
+input:focus::-webkit-input-placeholder {
+    color: transparent;
+}
+
+.disabledCustom {
+    cursor: not-allowed;
+    pointer-events: none;
+    background-color: #ddd;
+    border-color: #ddd;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.rowCustom {
+    margin-left: -15px;
+    margin-right: -15px;
+}

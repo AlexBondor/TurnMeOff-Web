@@ -1,11 +1,14 @@
-﻿@model MvcApplication1.Models.LoginModel
+﻿@model TurnMeOff.Repository.Models.LoginModel
 
 @{
+    
     ViewBag.Title = "Log in";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <!-- //TODO insert Log in in page title -->
-<div class="row">
-    <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3">
+@*<p class="loginTitle">TurnMeOff Project.</p>*@
+<div class="row" style="top:-50px">
+    <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 box-transparency">
         <section id="loginForm">
             @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
             {
@@ -14,31 +17,28 @@
                 <fieldset>
                     <legend>
                         <br>
-                        Log in Form
+                        Login form
                     </legend>
                     <div class="form-group">
-                        @*@Html.LabelFor(m => m.UserName)*@
-                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Username" })
-                        @Html.ValidationMessageFor(m => m.UserName)
-
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
+                        @Html.ValidationMessageFor(m => m.Email)
                     </div>
                     <div class="form-group">
-                        @*@Html.LabelFor(m => m.Password)*@
                         @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
                         @Html.ValidationMessageFor(m => m.Password)
                     </div>
                     <div class="checkbox">
                         @Html.CheckBoxFor(m => m.RememberMe)
-                        @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
+                        @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox, pull-left" })
+                        <p class="pull-right">Forgot your password?</p>
                     </div>
                     <button type="submit" class="btn btn-success btn-block">Submit</button>
                 </fieldset>
-                <p class="pull-left"><br>
+                <br>
+                <p class="text-center">
                     @Html.ActionLink("Register", "Register") if you don't have an account.
                 </p>
-                <p class="pull-left">
-                    Forgot your username or password?
-                </p>
+                <br>
             }
         </section>
     </div>

@@ -1,54 +1,115 @@
-﻿@{
-    ViewBag.Title = "AddDevice";
+﻿@model TurnMeOff.Repository.Models.DeviceModel
+
+@{
+    ViewBag.Title = "Add";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var pendingDeviceId = ViewBag.PendingDeviceId;
+    var pendingDeviceUserId = ViewBag.PendingDeviceUserId;    
+            
 }
 
-<div class="row">
-    <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2">
-        <fieldset>
-            <legend style="font-size: large">
-                <b>Add new device</b>
-            </legend>
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Name">
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Description">
-            </div>
-            <div class="form-group">
-                <b>Current Status</b>
-            </div>
-            <div class="form-group">
-                <b>Schedule</b>
-                <form>
-                    <input id="radioDefault" type="radio" name="schedule" value="default" checked>
-                    Default schedule<br>
-                    <input id="radioCustom" type="radio" name="schedule" value="custom">
-                    Custom schedule
-                    <div id="customDiv" class="hidden">
-                        <p>apare</p>
-                    </div>
-                </form>
-            </div>
-            <div class="row">
-                <div class="col-lg-6 col-md-6  col-sm-6 col-lg-6 col-xs-6">
-                    <button type="button" class="btn btn-success btn-block" style="font-size: large">Save</button>
-                </div>
-                <div class="col-lg-6 col-md-6  col-sm-6 col-lg-6 col-xs-6">
-                    <a type="button" class="btn btn-warning btn-block" style="font-size: large" href="~/Devices/List">Cancel</a>
-                </div>
-            </div>
-        </fieldset>
-    </div>
-</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    
+    <!-- BODY -->
+    <div class="row">
+        <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12">
 
-@section scripts {
+            <!-- BEGIN LIST-->
+            <div class="list-group" style="padding-bottom: 50px">
+                <input type="hidden" id="@pendingDeviceId" name="deviceID" value="@pendingDeviceId" />
+                <!-- NAME -->
+                <div class="list-group-item">
+                    <h3>Add device</h3>
+                    @{if (pendingDeviceId == null)
+                      {
+                        <div class="alert alert-danger clearfix">
+                            <strong>Holy guacamole!</strong> No pending device! Push a device button and try again.
+                            <a href="Add" class="btn btn-xs btn-danger pull-right"><b>Refresh</b></a>
+                        </div>
+                      }
+                    }
+                    <br>
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @placeholder = "Name" })
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+
+                <!-- DESCRIPTION -->
+                <div class="list-group-item">
+                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control", @placeholder = "Description" })
+                </div>
+
+                <!-- isOn -->
+                <div class="list-group-item">
+                    <br>
+                    <h4 class="list-group-item-heading"><b>Is On</b></h4>
+                    <div class="toggle">
+                        @Html.CheckBoxFor(model => model.isOn, new { @class = "check" })
+                        <b class="b switch"></b>
+                        <b class="b track"></b>
+                    </div>
+                    <br>
+                </div>
+
+                <!-- isSENSOR -->
+                <div class="list-group-item">
+                    <br>
+                    <h4 class="list-group-item-heading"><b>Is Sensor</b></h4>
+                    <div class="toggle">
+                        @Html.CheckBoxFor(model => model.isSensor, new { @class = "check" })
+                        <b class="b switch"></b>
+                        <b class="b track"></b>
+                    </div>
+                    <br>
+                </div>
+
+
+                <!-- STATUS -->
+                <div class="list-group-item clearfix">
+                    <br>
+                    <h4 class="list-group-item-heading pull-left"><b>Status</b></h4>
+                    @{if (pendingDeviceId == null)
+                      {
+                        <p class="list-group-item-text pull-right" style="color: #f00"><b>No device yet!</b></p>
+                      }
+                      else
+                      {
+                        <p class="list-group-item-text pull-right" style="color: #ff6a00"><b>Device pending!</b></p>  
+                      }
+                    }
+                    <br>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- BOTTOM NAVBAR -->
+    <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation" style="background-color: transparent">
+        <div class="rowCustom">
+            <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12">
+                <div class="btn-group btn-group-justified">
+                    @if (pendingDeviceId == null)
+                    {
+                        <a type="button" class="btn btn-success btn-lg btn-block disabledCustom" style="font-size: large" href="#">Save</a>
+                    }
+                    else
+                    {
+                        <a type="button" class="btn btn-success btn-lg btn-block" style="font-size: large" href="#" onclick="$(this).closest('form').submit()">Save</a>
+                    }
+                    <a type="button" class="btn btn-warning btn-lg btn-block" style="font-size: large" href="~/Devices/List">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+}
+
+@section Scripts {
     <script type="text/javascript">
-        $("#radioCustom").click(function () {
-            $("#customDiv").removeClass("hidden");
-        });
-        $("#radioDefault").click(function () {
-            $("#customDiv").addClass("hidden");
+        $(".day").each(function () {
+            if ($(this).is(':checked'))
+                $(this).parent.removeClass("btn-default").addClass("btn-info");
         });
     </script>
 }
