@@ -3,4 +3,7 @@ TurnMeOff-Web
 
 Contest Project
 
-Habar n-am ce-am facut cand am dat commit ultima data.. btw, it seems to be ok:-??
+
+- customize error message when adding other user's device
+- make list switches work
+- edit user data
