@@ -21,13 +21,42 @@ namespace TurnMeOff.Controllers
             _repository = new TurnMeOff.Repository.Repository();
         }
 
+        public ActionResult Register()
+        {
+            RegisterModel register = new RegisterModel();
+            return View(register);
+        }
+
+        [HttpPost]
+        public ActionResult Register(RegisterModel model, string returnURL)
+        {
+            if (ModelState.IsValid)
+            {
+                if (_repository.GetUserByEmail(model.Email) == null)
+                {
+                    if (_repository.GetMasterDeviceById(model.MasterDeviceID) != null)
+                    {
+                        _repository.AddUser(model);
+                        _repository.RemoveMasterDeviceFromMasterDevices(model.MasterDeviceID);
+                        FormsAuthentication.SetAuthCookie(model.Email, true);
+                        return RedirectToAction("List", "Devices");
+                    }
+                    ModelState.AddModelError("masterDeviceID", "Code not found! Please try again");
+
+                    return View(model);
+                }
+                ModelState.AddModelError("Email", "An account has already been created for this Email!");
+            }
+
+            return View(model);
+        }
+       
         public ActionResult Login()
         {
             if (User.Identity.IsAuthenticated)
                 return RedirectToAction("List", "Devices");
             return View();
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -54,8 +83,6 @@ namespace TurnMeOff.Controllers
                     {
                         ModelState.AddModelError("Password", "The provided password is incorrect!");
                     }
-
-
                 }
                 catch
                 {
@@ -69,46 +96,15 @@ namespace TurnMeOff.Controllers
                     }
                 }
             }
+
             return View(model);
-
         }
-
+        
+        [Authorize]
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "Account");
-        }
-
-
-        [AllowAnonymous]
-        public ActionResult Register()
-        {
-            RegisterModel register = new RegisterModel();
-            return View(register);
-        }
-
-        [HttpPost]
-        public ActionResult Register(RegisterModel model, string returnURL)
-        {
-            if (ModelState.IsValid)
-            {
-                if (_repository.GetUserByEmail(model.Email) == null)
-                {
-                    if (_repository.GetMasterDeviceById(model.MasterDeviceID))
-                    {
-                        _repository.AddUser(model);
-
-                        FormsAuthentication.SetAuthCookie(model.Email, true);
-                        return RedirectToAction("List", "Devices");
-                    }
-                    ModelState.AddModelError("masterDeviceID", "Code not found! Please try again");
-                    return View(model);
-
-                }
-                ModelState.AddModelError("Email", "An account has already been created for this Email!");
-            }
-            return View(model);
-
         }
 
         [Authorize]
@@ -117,9 +113,16 @@ namespace TurnMeOff.Controllers
             var email = System.Web.HttpContext.Current.User.Identity.Name.ToString();
             var currentUser = _repository.GetUserByEmail(email);
 
-            ViewBag.User = currentUser;
+            UserModel model = new UserModel
+            {
+                UserID = currentUser.userID,
+                Firstname = currentUser.Firstname,
+                Lastname = currentUser.Lastname,
+                Email = currentUser.Email,
+                Password = currentUser.Password,
+            };
 
-            return View();
+            return View(model);
         }
 
         [Authorize]
@@ -132,6 +135,7 @@ namespace TurnMeOff.Controllers
                 Firstname = model.Firstname,
                 Lastname = model.Lastname,
                 Email = model.Email,
+                Password = model.Password,
             };
 
             if (ModelState.IsValid)
@@ -139,8 +143,8 @@ namespace TurnMeOff.Controllers
                 _repository.EditUser(user);
                 return RedirectToAction("List", "Devices");
             }
-            return View(model);
 
+            return View(model);
         }
 
         [Authorize]
@@ -151,22 +155,9 @@ namespace TurnMeOff.Controllers
                 FormsAuthentication.SignOut();
                 _repository.RemoveUser(id);
                 return RedirectToAction("Login", "Account");
-
             }
+
             return View(id);
         }
-
-        //[Authorize]
-        //public ActionResult ChangePassword()
-        //{
-
-        //}
-
-        //[Authorize]
-        //[HttpPost]
-        //public ActionResult ChangePassword(ChangePasswordModel model)
-        //{
-
-        //}
     }
 }

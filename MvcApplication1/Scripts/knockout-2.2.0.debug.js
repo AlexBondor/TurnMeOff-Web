@@ -2684,7 +2684,7 @@ ko.bindingHandlers['value'] = {
         var valueHasChanged = (newValue != elementValue);
 
         // JavaScript's 0 == "" behavious is unfortunate here as it prevents writing 0 to an empty text box (loose equality suggests the values are the same).
-        // We don't want to do a strict equality comparison as that is more confusing for developers in certain cases, so we specifically special case 0 != "" here.
+        // We don't want to do a strict equality comparisEnabled as that is more confusing for developers in certain cases, so we specifically special case 0 != "" here.
         if ((newValue === 0) && (elementValue !== 0) && (elementValue !== "0"))
             valueHasChanged = true;
 
@@ -3247,7 +3247,7 @@ ko.utils.compareArrays = (function () {
         }
 
         if (notInSml.length && notInBig.length) {
-            // Set a limit on the number of consecutive non-matching comparisons; having it a multiple of
+            // Set a limit on the number of consecutive non-matching comparisEnableds; having it a multiple of
             // smlIndexMax keeps the time complexity of this algorithm linear.
             var limitFailedCompares = smlIndexMax * 10, failedCompares,
                 a, d, notInSmlItem, notInBigItem;

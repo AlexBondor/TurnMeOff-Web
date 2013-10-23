@@ -4622,7 +4622,7 @@ sortOrder = docElem.compareDocumentPosition ?
 		}
 
 		// Otherwise they're somewhere else in the tree so we need
-		// to build up a full list of the parentNodes for comparison
+		// to build up a full list of the parentNodes for comparisEnabled
 		while ( cur ) {
 			ap.unshift( cur );
 			cur = cur.parentNode;
@@ -4652,7 +4652,7 @@ sortOrder = docElem.compareDocumentPosition ?
 	};
 
 // Always assume the presence of duplicates if sort doesn't
-// pass them to our comparison function (as in Google Chrome).
+// pass them to our comparisEnabled function (as in Google Chrome).
 [0, 0].sort( sortOrder );
 baseHasDuplicate = !hasDuplicate;
 

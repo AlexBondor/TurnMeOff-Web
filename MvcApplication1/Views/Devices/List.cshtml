@@ -1,9 +1,14 @@
 ﻿@{
     ViewBag.Title = "List";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutList.cshtml";
 
     var list = ViewBag.Lista;
+    
 }
+
+<script>
+    var userId = '@(ViewBag.userID)';
+</script>
 
 <!-- BODY -->
 <div class="row">
@@ -15,7 +20,7 @@
             {
                 foreach (var device in list)
                 {
-                <a id="test" href="/Devices/Edit/@device.deviceID" class="list-group-item">
+                <a href="/Devices/Edit/@device.deviceID" class="list-group-item">
                     <h3 class="list-group-item-heading">@device.Name</h3>
                     @if (device.Description == null)
                     {
@@ -27,43 +32,52 @@
                     }
                     else
                     {
+                        <p id="test"></p>
                         <p class="list-group-item-text">
                             Description: @device.Description
                             <br>
-                            Status: Connected
+                            Status: Not in range
                         </p>
                     }
-                    
-                    <div class="toggle">
-                        <input id="@device.isOn" name="isOn" type="checkbox" class="check" value="@device.isOn">
-                        <!-- unchecked as it is:) or <input type="checkbox" checked class="check"> to be checked -->
-                        <b class="b switch"></b>
-                        <b class="b track"></b>
-                    </div>
+                    @if (!device.isSensor)
+                    {
+                        <div class="toggle">
+                            <input id="@device.deviceID" type="checkbox" class="check" required="@device.isEnabled"/>
+                            <b class="b switch"></b>
+                            <b class="b track"></b>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="sensorValue"> 
+                             @*TODO display sensor value here @device.SensorValue*@ 
+                            value
+                        </div>
+                    }
+
                 </a>
                 }
             }
             else
             {
-                <a href="#" class="list-group-item">
+                <a href="/Devices/Help" class="list-group-item">
                     <h3 class="list-group-item-heading">No devices yet!</h3>
                     <p class="list-group-item-text">
-                        Click Add device button and customize it!                       
+                        Click and visit our help page!                     
                     </p>
                 </a>
             }
         </div>
-
-
     </div>
 </div>
+
 <!-- BOTTOM NAVBAR -->
 <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation" style="background-color: transparent">
     <div class="rowCustom">
         <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
             <div class="btn-group btn-group-justified">
                 <a type="button" class="btn btn-success btn-block btn-lg" style="font-size: large" href="~/Devices/Add">Add device</a>
-                <a type="button" class="btn btn-danger btn-block btn-lg" style="font-size: large" href="#">Turn off all devices</a>
+                <div id="turnOffAllDevicesButton" class="btn btn-danger btn-block btn-lg" style="font-size: large">Turn off all devices</div>
             </div>
         </div>
     </div>
@@ -72,6 +86,30 @@
 
 @section scripts{
     <script type="text/javascript">
-       
+        $("input").each(function () {
+            if (this.required) {
+                $(this).attr('checked', 'checked');
+            }
+            else {
+                $(this).removeAttr('checked');
+            }
+        });
+        $("input").each(function () {
+            $(this).click(function () {
+                $.ajax({
+                    url: "EnableDevice?userId=" + userId + "&deviceId=" + this.id + "&isEnabled=" + !this.required,
+                    type: "GET",
+                })
+            });
+        });
+        $("#turnOffAllDevicesButton").click(function () {
+            $.ajax({
+                url: "TurnOffAllDevices",
+                type: "GET",
+            })
+            $("input").each(function () {
+                $(this).removeAttr('checked');
+            });
+        });
     </script>
 }

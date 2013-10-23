@@ -825,7 +825,7 @@ intellisense.annotate(jQuery.fn, {
   },
   'attributeEndsWith': function() {
     /// <signature>
-    ///   <summary>Selects elements that have the specified attribute with a value ending exactly with a given string. The comparison is case sensitive.</summary>
+    ///   <summary>Selects elements that have the specified attribute with a value ending exactly with a given string. The comparisEnabled is case sensitive.</summary>
     ///   <param name="attribute" type="String">An attribute name.</param>
     ///   <param name="value" type="String">An attribute value. Can be either an unquoted single word or a quoted string.</param>
     /// </signature>

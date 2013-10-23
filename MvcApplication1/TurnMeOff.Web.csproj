@@ -196,7 +196,14 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
-    <Content Include="Images\background.png" />
+    <Content Include="Images\AddDeviceButton.png" />
+    <Content Include="Images\AddDeviceRefreshButton.png" />
+    <Content Include="Images\DeleteAccountButton.png" />
+    <Content Include="Images\DeleteDeviceButton.png" />
+    <Content Include="Images\EditAccountButton.png" />
+    <Content Include="Images\loginBackground.png" />
+    <Content Include="Images\listBackground.png" />
+    <Content Include="Images\NewDevice.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -219,33 +226,19 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Scripts\_references.js" />
-    <Content Include="Images\accent.png" />
-    <Content Include="Images\bullet.png" />
-    <Content Include="Images\heroAccent.png" />
-    <Content Include="Images\orderedList0.png" />
-    <Content Include="Images\orderedList1.png" />
-    <Content Include="Images\orderedList2.png" />
-    <Content Include="Images\orderedList3.png" />
-    <Content Include="Images\orderedList4.png" />
-    <Content Include="Images\orderedList5.png" />
-    <Content Include="Images\orderedList6.png" />
-    <Content Include="Images\orderedList7.png" />
-    <Content Include="Images\orderedList8.png" />
-    <Content Include="Images\orderedList9.png" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_LayoutList.cshtml" />
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\Devices\Settings.cshtml" />
+    <Content Include="Views\Devices\Help.cshtml" />
     <Content Include="Views\Devices\List.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Devices\Add.cshtml" />
     <Content Include="Views\Devices\Edit.cshtml" />
-    <Content Include="Views\Account\testChangePassword.cshtml" />
-    <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Shared\_LayoutLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -1,12 +1,10 @@
 ﻿@model TurnMeOff.Repository.Models.LoginModel
 
 @{
-    
     ViewBag.Title = "Log in";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 }
-<!-- //TODO insert Log in in page title -->
-@*<p class="loginTitle">TurnMeOff Project.</p>*@
+
 <div class="row" style="top:-50px">
     <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 box-transparency">
         <section id="loginForm">
@@ -30,7 +28,7 @@
                     <div class="checkbox">
                         @Html.CheckBoxFor(m => m.RememberMe)
                         @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox, pull-left" })
-                        <p class="pull-right">Forgot your password?</p>
+                        <p class="pull-right">Forgot password?</p>
                     </div>
                     <button type="submit" class="btn btn-success btn-block">Submit</button>
                 </fieldset>
@@ -43,11 +41,6 @@
         </section>
     </div>
 </div>
-
-@*<section class="social" id="socialLoginForm">
-    <h2>Use another service to log in.</h2>
-    @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
-</section>*@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

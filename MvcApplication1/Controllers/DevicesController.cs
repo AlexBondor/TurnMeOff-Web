@@ -22,7 +22,6 @@ namespace TurnMeOff.Controllers
             _repository = new TurnMeOff.Repository.Repository();
         }
 
-
         public ActionResult List()
         {
             var email = System.Web.HttpContext.Current.User.Identity.Name.ToString();
@@ -31,6 +30,7 @@ namespace TurnMeOff.Controllers
             List<Device> devicesList = _repository.GetAllDevicesByUserId(currentUser.userID);
 
             ViewBag.Lista = devicesList;
+            ViewBag.userID = currentUser.userID;
 
             return View();
         }
@@ -46,6 +46,16 @@ namespace TurnMeOff.Controllers
             _repository.AddPendingDevice(device);
         }
 
+        //public void AddPendingMasterDevice(string masterDeviceCode, string address)
+        //{
+        //    var masterDevice = new PendingMasterDevices
+        //    {
+        //        masterDeviceID = masterDeviceCode,
+        //        IPAddress = address,
+        //    };
+        //    _repository.AddPendingMasterDevice(masterDevice);
+        //}
+
         public ActionResult Add()
         {
             var pairingIsValid = false;
@@ -53,8 +63,6 @@ namespace TurnMeOff.Controllers
 
             var email = System.Web.HttpContext.Current.User.Identity.Name.ToString();
             var currentUser = _repository.GetUserByEmail(email);
-
-
 
             /* check if the current user is setting up this particular device */
             if (device != null && device.userID == currentUser.userID)
@@ -64,6 +72,7 @@ namespace TurnMeOff.Controllers
                 ViewBag.PendingDeviceId = device.deviceID;
             }
 
+            /* TODO make this error look nice! */
             if (device != null && !pairingIsValid)
             {
                 ModelState.AddModelError("", "Woops. Looks like you're trying to add someone else's device:D");
@@ -113,7 +122,7 @@ namespace TurnMeOff.Controllers
                     Name = model.Name,
                     Description = model.Description,
                     isSensor = model.isSensor,
-                    isOn = model.isOn,
+                    isEnabled = model.isEnabled,
                     userID = currentUser.userID,
                 };
             if (ModelState.IsValid)
@@ -124,20 +133,28 @@ namespace TurnMeOff.Controllers
             return View(model);
         }
 
-        [Authorize]
         public ActionResult Delete(Guid id)
         {
             if (ModelState.IsValid)
             {
-
                 _repository.RemoveDevice(id);
                 return RedirectToAction("List");
-
             }
+
             return View(id);
         }
 
-        public ActionResult Settings()
+        public void EnableDevice(Guid userId, Guid deviceId, bool isEnabled)
+        {
+            _repository.EnableDevice(userId, deviceId, isEnabled);
+        }
+
+        public void TurnOffAllDevices()
+        {
+            _repository.TurnOffAllDevices();
+        }
+
+        public ActionResult Help()
         {
             return View();
         }
