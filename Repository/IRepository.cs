@@ -12,36 +12,42 @@ namespace TurnMeOff.Repository
     {
         void Dispose();
 
-        bool GetUserMatchPassword(string email, string password);
-
-        bool MatchPassword(Guid id, ChangePasswordModel model);
+        string EncodePassword(string originalPassword);
 
         User GetUserByEmail(string email);
 
-        Device GetDeviceById(Guid id);
+        bool GetUserMatchPassword(string email, string password);
 
-        void UpdateUserPassword(Guid id, ChangePasswordModel model);
+        MasterDevice GetMasterDeviceById(string id);
+
+        void RemoveMasterDeviceFromMasterDevices(string id);
 
         void AddUser(RegisterModel model);
-
+        
         void EditUser(User model);
-
-        void AddPendingDevice(PendingDevice model);
-
-        void AddDevice(DeviceModel model, Guid userId);
-
-        void RemoveDevice(Guid deviceId);
 
         void RemoveUser(Guid userId);
 
-        void EditDevice(Device model);
-
-        bool GetMasterDeviceById(string id);
-
         List<Device> GetAllDevicesByUserId(Guid userId);
+
+        Device GetDeviceById(Guid id);
+
+        void DeletePendingDevices();
+
+        void AddPendingDevice(PendingDevice model);
+
+        //void AddPendingMasterDevice(PendingMasterDevices model);
 
         PendingDevice GetPendingDevice();
 
-        void DeletePendingDevices();
+        void EnableDevice(Guid userId, Guid deviceId, bool isEnabled);
+
+        void TurnOffAllDevices();
+
+        void AddDevice(DeviceModel model, Guid userId);
+
+        void EditDevice(Device model);
+
+        void RemoveDevice(Guid deviceId);
     }
 }

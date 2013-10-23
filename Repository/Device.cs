@@ -15,11 +15,13 @@ namespace Repository
     public partial class Device
     {
         public System.Guid deviceID { get; set; }
+        public System.Guid userID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public bool isSensor { get; set; }
-        public System.Guid userID { get; set; }
-        public bool isOn { get; set; }
+        public bool isEnabled { get; set; }
+        public Nullable<double> SensorValue { get; set; }
+        public string SensorType { get; set; }
     
         public virtual User User { get; set; }
     }

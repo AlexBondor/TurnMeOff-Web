@@ -26,8 +26,9 @@ namespace Repository
         }
     
         public DbSet<Device> Devices { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<PendingDevice> PendingDevices { get; set; }
+        public DbSet<EnabledDevice> EnabledDevices { get; set; }
         public DbSet<MasterDevice> MasterDevices { get; set; }
+        public DbSet<PendingDevice> PendingDevices { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

@@ -4,12 +4,13 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="1d9b04185dcb4ea2872f83d004cdf507" Name="Diagram1">
-        <EntityTypeShape EntityType="turnoffdbModel.Device" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="turnoffdbModel.User" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
-        <AssociationConnector Association="turnoffdbModel.FK_Devices_Users" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="turnoffdbModel.PendingDevice" Width="1.5" PointX="5.25" PointY="1" />
-        <EntityTypeShape EntityType="turnoffdbModel.MasterDevice" Width="1.5" PointX="7" PointY="1" />
+      <Diagram DiagramId="1d9b04185dcb4ea2872f83d004cdf507" Name="Diagram1" ZoomLevel="77">
+        <EntityTypeShape EntityType="turnoffdbModel.Device" Width="1.5" PointX="2.375" PointY="0.75" />
+        <EntityTypeShape EntityType="turnoffdbModel.EnabledDevice" Width="1.5" PointX="6.25" PointY="0.75" />
+        <EntityTypeShape EntityType="turnoffdbModel.MasterDevice" Width="1.5" PointX="6.25" PointY="2.25" />
+        <EntityTypeShape EntityType="turnoffdbModel.PendingDevice" Width="1.5" PointX="8" PointY="0.75" />
+        <EntityTypeShape EntityType="turnoffdbModel.User" Width="1.5" PointX="4.125" PointY="0.75" />
+        <AssociationConnector Association="turnoffdbModel.FK_Devices_Users" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

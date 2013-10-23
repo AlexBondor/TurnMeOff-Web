@@ -7,6 +7,7 @@
     <Schema Namespace="turnoffdbModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="turnoffdbModelStoreContainer">
           <EntitySet Name="Devices" EntityType="turnoffdbModel.Store.Devices" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="EnabledDevices" EntityType="turnoffdbModel.Store.EnabledDevices" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="MasterDevices" EntityType="turnoffdbModel.Store.MasterDevices" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="PendingDevice" EntityType="turnoffdbModel.Store.PendingDevice" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Users" EntityType="turnoffdbModel.Store.Users" store:Type="Tables" Schema="dbo" />
@@ -20,11 +21,20 @@
             <PropertyRef Name="deviceID" />
           </Key>
           <Property Name="deviceID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="userID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="Description" Type="nvarchar" MaxLength="50" />
           <Property Name="isSensor" Type="bit" Nullable="false" />
-          <Property Name="userID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="isOn" Type="bit" Nullable="false" />
+          <Property Name="isEnabled" Type="bit" Nullable="false" />
+          <Property Name="SensorValue" Type="float" />
+          <Property Name="SensorType" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="EnabledDevices">
+          <Key>
+            <PropertyRef Name="deviceID" />
+          </Key>
+          <Property Name="deviceID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="userID" Type="varchar" Nullable="false" MaxLength="50" />
         </EntityType>
         <EntityType Name="MasterDevices">
           <Key>
@@ -68,56 +78,35 @@
       <Schema Namespace="turnoffdbModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="turnoffdbEntities" p1:LazyLoadingEnabled="true">
           <EntitySet Name="Devices" EntityType="turnoffdbModel.Device" />
+          <EntitySet Name="EnabledDevices" EntityType="turnoffdbModel.EnabledDevice" />
+          <EntitySet Name="MasterDevices" EntityType="turnoffdbModel.MasterDevice" />
+          <EntitySet Name="PendingDevices" EntityType="turnoffdbModel.PendingDevice" />
           <EntitySet Name="Users" EntityType="turnoffdbModel.User" />
           <AssociationSet Name="FK_Devices_Users" Association="turnoffdbModel.FK_Devices_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Devices" EntitySet="Devices" />
+            <End Role="User" EntitySet="Users" />
+            <End Role="Device" EntitySet="Devices" />
           </AssociationSet>
-          <EntitySet Name="PendingDevices" EntityType="turnoffdbModel.PendingDevice" />
-          <EntitySet Name="MasterDevices" EntityType="turnoffdbModel.MasterDevice" />
         </EntityContainer>
         <EntityType Name="Device">
           <Key>
             <PropertyRef Name="deviceID" />
           </Key>
-          <Property Name="deviceID" Type="Guid" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Description" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="isSensor" Type="Boolean" Nullable="false" />
-          <Property Name="userID" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="turnoffdbModel.FK_Devices_Users" FromRole="Devices" ToRole="Users" />
-          <Property Type="Boolean" Name="isOn" Nullable="false" />
+          <Property Type="Guid" Name="deviceID" Nullable="false" />
+          <Property Type="Guid" Name="userID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="isSensor" Nullable="false" />
+          <Property Type="Boolean" Name="isEnabled" Nullable="false" />
+          <Property Type="Double" Name="SensorValue" />
+          <Property Type="String" Name="SensorType" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="turnoffdbModel.FK_Devices_Users" FromRole="Device" ToRole="User" />
         </EntityType>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="userID" />
-          </Key>
-          <Property Name="userID" Type="Guid" Nullable="false" />
-          <Property Name="Firstname" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Lastname" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="Devices" Relationship="turnoffdbModel.FK_Devices_Users" FromRole="Users" ToRole="Devices" />
-          <Property Type="String" Name="masterDeviceID" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
-        </EntityType>
-        <Association Name="FK_Devices_Users">
-          <End Role="Users" Type="turnoffdbModel.User" Multiplicity="1" />
-          <End Role="Devices" Type="turnoffdbModel.Device" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="userID" />
-            </Principal>
-            <Dependent Role="Devices">
-              <PropertyRef Name="userID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="PendingDevice">
+        <EntityType Name="EnabledDevice">
           <Key>
             <PropertyRef Name="deviceID" />
           </Key>
           <Property Type="Guid" Name="deviceID" Nullable="false" />
-          <Property Type="Guid" Name="userID" Nullable="false" />
+          <Property Type="String" Name="userID" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="MasterDevice">
           <Key>
@@ -125,7 +114,38 @@
           </Key>
           <Property Type="String" Name="masterDeviceID" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
         </EntityType>
-      </Schema>
+        <EntityType Name="PendingDevice">
+          <Key>
+            <PropertyRef Name="deviceID" />
+          </Key>
+          <Property Type="Guid" Name="deviceID" Nullable="false" />
+          <Property Type="Guid" Name="userID" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Type="Guid" Name="userID" Nullable="false" />
+          <Property Type="String" Name="Firstname" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Lastname" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="masterDeviceID" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Devices" Relationship="turnoffdbModel.FK_Devices_Users" FromRole="User" ToRole="Device" />
+        </EntityType>
+        <Association Name="FK_Devices_Users">
+          <End Type="turnoffdbModel.User" Role="User" Multiplicity="1" />
+          <End Type="turnoffdbModel.Device" Role="Device" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="Device">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -134,24 +154,29 @@
           <EntitySetMapping Name="Devices">
             <EntityTypeMapping TypeName="turnoffdbModel.Device">
               <MappingFragment StoreEntitySet="Devices">
-                <ScalarProperty Name="isOn" ColumnName="isOn" />
-                <ScalarProperty Name="deviceID" ColumnName="deviceID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="SensorType" ColumnName="SensorType" />
+                <ScalarProperty Name="SensorValue" ColumnName="SensorValue" />
+                <ScalarProperty Name="isEnabled" ColumnName="isEnabled" />
                 <ScalarProperty Name="isSensor" ColumnName="isSensor" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="deviceID" ColumnName="deviceID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="turnoffdbModel.User">
-              <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="masterDeviceID" ColumnName="masterDeviceID" />
+          <EntitySetMapping Name="EnabledDevices">
+            <EntityTypeMapping TypeName="turnoffdbModel.EnabledDevice">
+              <MappingFragment StoreEntitySet="EnabledDevices">
                 <ScalarProperty Name="userID" ColumnName="userID" />
-                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
-                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="deviceID" ColumnName="deviceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MasterDevices">
+            <EntityTypeMapping TypeName="turnoffdbModel.MasterDevice">
+              <MappingFragment StoreEntitySet="MasterDevices">
+                <ScalarProperty Name="masterDeviceID" ColumnName="masterDeviceID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -163,10 +188,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="MasterDevices">
-            <EntityTypeMapping TypeName="turnoffdbModel.MasterDevice">
-              <MappingFragment StoreEntitySet="MasterDevices">
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="turnoffdbModel.User">
+              <MappingFragment StoreEntitySet="Users">
                 <ScalarProperty Name="masterDeviceID" ColumnName="masterDeviceID" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
